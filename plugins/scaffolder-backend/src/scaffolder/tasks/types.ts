@@ -108,6 +108,7 @@ export interface TaskContext {
   spec: TaskSpec;
   secrets?: TaskSecrets;
   done: boolean;
+  isDryRun?: boolean;
   emitLog(message: string, logMetadata?: JsonObject): Promise<void>;
   complete(result: TaskCompletionState, metadata?: JsonObject): Promise<void>;
   getWorkspaceName(): Promise<string>;
