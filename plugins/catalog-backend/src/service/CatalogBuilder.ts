@@ -404,6 +404,7 @@ export class CatalogBuilder {
       createConditionTransformer(this.permissionRules),
     );
     const permissionIntegrationRouter = createPermissionIntegrationRouter(
+      this.env.permissions,
       catalogPermissions,
       {
         resourceType: RESOURCE_TYPE_CATALOG_ENTITY,

@@ -17,13 +17,15 @@
 import express, { Response } from 'express';
 import Router from 'express-promise-router';
 import { z } from 'zod';
-import { InputError } from '@backstage/errors';
+import { InputError, NotFoundError } from '@backstage/errors';
 import { errorHandler } from '@backstage/backend-common';
 import {
+  aggregatedPermissionsReadPermission,
   AuthorizeResult,
   DefinitivePolicyDecision,
   IdentifiedPermissionMessage,
   Permission,
+  PermissionAuthorizer,
   PermissionCondition,
   PermissionCriteria,
 } from '@backstage/plugin-permission-common';
@@ -176,6 +178,7 @@ export const createPermissionIntegrationRouter = <
   TResourceType extends string,
   TResource,
 >(
+  permissionApi: PermissionAuthorizer,
   permissions: Permission[],
   options?: {
     resourceType: TResourceType;
@@ -192,9 +195,22 @@ export const createPermissionIntegrationRouter = <
   const router = Router();
   router.use(express.json());
 
-  router.get('/.well-known/backstage/permissions/permission-list', (_, res) => {
-    return res.status(200).json({ permissions });
-  });
+  router.get(
+    '/.well-known/backstage/permissions/permission-list',
+    async (req, res) => {
+      const authorizeDecision = (
+        await permissionApi.authorize(
+          [{ permission: aggregatedPermissionsReadPermission }],
+          { token: req.header('authorization') },
+        )
+      )[0];
+
+      if (authorizeDecision.result === AuthorizeResult.DENY) {
+        throw new NotFoundError();
+      }
+      return res.status(200).json({ permissions });
+    },
+  );
 
   if (options) {
     const { resourceType, rules, getResources } = options;
