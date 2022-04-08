@@ -149,6 +149,24 @@ export interface ScaffolderStreamLogsOptions {
   taskId: string;
   after?: number;
 }
+
+export interface ScaffolderDryRunOptions {
+  template: JsonValue;
+  values: JsonObject;
+  secrets: JsonObject;
+  content: { path: string; base64Content: string }[];
+}
+
+export interface ScaffolderDryRunResponse {
+  content: Array<{
+    path: string;
+    base64Content: string;
+    executable: boolean;
+  }>;
+  log: Array<LogEvent['body']>;
+  output: ScaffolderTaskOutput;
+}
+
 /**
  * An API to interact with the scaffolder backend.
  *
@@ -181,4 +199,6 @@ export interface ScaffolderApi {
   listActions(): Promise<ListActionsResponse>;
 
   streamLogs(options: ScaffolderStreamLogsOptions): Observable<LogEvent>;
+
+  dryRun?(options: ScaffolderDryRunOptions): Promise<ScaffolderDryRunResponse>;
 }

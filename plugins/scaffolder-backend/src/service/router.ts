@@ -354,7 +354,14 @@ export async function createRouter(
         },
       });
 
-      res.status(200).json(result);
+      res.status(200).json({
+        ...result,
+        content: result.content.map(file => ({
+          path: file.path,
+          executable: file.executable,
+          base64Content: file.content.toString('base64'),
+        })),
+      });
     });
 
   const app = express();
