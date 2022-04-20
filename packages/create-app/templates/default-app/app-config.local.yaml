@@ -1,1 +1,1 @@
-# Backstage override configuration for your local development environment
+# Backstage override configuration for your personal local development environment. This file is in .gitignore and therefore should never be checked into source control.
