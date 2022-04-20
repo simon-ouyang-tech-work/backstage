@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { UserEntity } from '@backstage/catalog-model';
-import { parseGitLabGroupUrl } from './groups';
 import { GitLabClient, paginated } from './client';
+import { parseGitLabGroupUrl } from './groups';
 import { GitLabUserResponse, UserTransformer } from './types';
 
 /**
@@ -31,12 +32,10 @@ export type UserIngestionOptions = {
 
 /**
  * The default implementation to map a GitLab user response to a User entity.
- *
- * @public
  */
-export async function defaultUserTransformer(
+export function defaultUserTransformer(
   user: GitLabUserResponse,
-): Promise<UserEntity | undefined> {
+): UserEntity | undefined {
   if (user.bot) {
     return undefined;
   }
@@ -52,10 +51,19 @@ export async function defaultUserTransformer(
       memberOf: [],
     },
   };
-  if (user.name) entity.spec.profile!.displayName = user.name;
-  if (user.avatar_url) entity.spec.profile!.picture = user.avatar_url;
-  if (user.public_email) entity.spec.profile!.email = user.public_email;
-  if (user.email) entity.spec.profile!.email = user.email;
+
+  if (user.name) {
+    entity.spec.profile!.displayName = user.name;
+  }
+  if (user.avatar_url) {
+    entity.spec.profile!.picture = user.avatar_url;
+  }
+  if (user.public_email) {
+    entity.spec.profile!.email = user.public_email;
+  }
+  if (user.email) {
+    entity.spec.profile!.email = user.email;
+  }
 
   return entity;
 }

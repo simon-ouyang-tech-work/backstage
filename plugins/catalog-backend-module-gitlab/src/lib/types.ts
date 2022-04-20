@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { UserEntity } from '@backstage/catalog-model';
+
+import { GroupEntity, UserEntity } from '@backstage/catalog-model';
 
 export type GitLabProject = {
   id: number;
@@ -24,7 +25,7 @@ export type GitLabProject = {
 };
 
 /**
- * GitLab API User Repsonse
+ * GitLab API User Response
  *
  * https://docs.gitlab.com/ee/api/users.html#for-user.
  * @public
@@ -57,6 +58,17 @@ export type GitLabUserResponse = {
  *
  * @public
  */
-export type UserTransformer = (
-  user: GitLabUserResponse,
-) => Promise<UserEntity | undefined>;
+export type UserTransformer = (options: {
+  user: GitLabUserResponse;
+  defaultTransformer: (user: GitLabUserResponse) => UserEntity;
+}) => Promise<UserEntity | undefined>;
+
+/**
+ * Transformer to map a GitLab group response to a Group entity.
+ *
+ * @public
+ */
+export type GroupTransformer = (options: {
+  group: unknown;
+  defaultTransformer: (group: unknown) => GroupEntity;
+}) => Promise<GroupEntity | undefined>;

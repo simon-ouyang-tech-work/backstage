@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import { ConfigReader } from '@backstage/config';
 import { GitLabIntegration } from '@backstage/integration';
 
 import {
-  readGitLabOrgProviderConfig,
   groupByIntegrationConfig,
+  readGitLabOrgProviderConfig,
 } from './config';
 
 describe('readGitLabOrgProviderConfig', () => {

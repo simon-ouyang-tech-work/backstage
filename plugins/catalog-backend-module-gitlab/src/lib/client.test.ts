@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { ConfigReader } from '@backstage/config';
-import { setupRequestMockHandlers } from '@backstage/backend-test-utils';
-import { readGitLabIntegrationConfig } from '@backstage/integration';
 import { getVoidLogger } from '@backstage/backend-common';
+import { setupRequestMockHandlers } from '@backstage/backend-test-utils';
+import { ConfigReader } from '@backstage/config';
+import { readGitLabIntegrationConfig } from '@backstage/integration';
 import { rest } from 'msw';
 import { setupServer, SetupServerApi } from 'msw/node';
 

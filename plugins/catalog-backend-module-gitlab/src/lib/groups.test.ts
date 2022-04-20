@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ConfigReader } from '@backstage/config';
-import { setupRequestMockHandlers } from '@backstage/backend-test-utils';
-import { readGitLabIntegrationConfig } from '@backstage/integration';
+
 import { getVoidLogger } from '@backstage/backend-common';
+import { setupRequestMockHandlers } from '@backstage/backend-test-utils';
 import { stringifyEntityRef } from '@backstage/catalog-model';
+import { ConfigReader } from '@backstage/config';
+import { readGitLabIntegrationConfig } from '@backstage/integration';
 import { rest } from 'msw';
 import { setupServer, SetupServerApi } from 'msw/node';
 import { GitLabClient } from './client';
 import {
-  parseGitLabGroupUrl,
   getGroupPathComponents,
   getGroups,
-  populateChildrenMembers,
   GroupAdjacency,
   GroupNode,
+  parseGitLabGroupUrl,
+  populateChildrenMembers,
 } from './groups';
 
 const server = setupServer();
