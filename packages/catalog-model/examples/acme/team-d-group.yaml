@@ -15,7 +15,7 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: eva.macdowell
+  name: eva.macdowell.teamd
 spec:
   profile:
     displayName: Eva MacDowell
@@ -26,7 +26,7 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: lucy.sheehan
+  name: lucy.sheehan.teamd
 spec:
   profile:
     displayName: Lucy Sheehan
