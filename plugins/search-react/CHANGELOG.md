@@ -1,5 +1,11 @@
 # @backstage/plugin-search-react
 
+## 0.1.1-next.0
+
+### Patch Changes
+
+- a307a14be0: Removed dependency on `@backstage/core-app-api`.
+
 ## 0.1.0
 
 ### Minor Changes

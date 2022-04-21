@@ -1,5 +1,13 @@
 # @backstage/cli
 
+## 0.17.1-next.0
+
+### Patch Changes
+
+- 97cce67ac7: Add instructions to `create-github-app` command.
+- 344ea56acc: Bump `commander` to version 9.1.0
+- 8ab2a8226b: Updated the `create-github-app` command to throw an error if the organization argument is a user or a non existing organization.
+
 ## 0.17.0
 
 ### Minor Changes

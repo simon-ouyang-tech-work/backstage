@@ -1,5 +1,14 @@
 # @backstage/backend-common
 
+## 0.13.3-next.0
+
+### Patch Changes
+
+- 75bf9e1da9: Split BitbucketUrlReader into BitbucketCloudUrlReader and BitbucketServerUrlReader. Backwards compatible.
+- 9ec4e0613e: Update to `jose` 4.6.0
+- Updated dependencies
+  - @backstage/integration@1.2.0-next.0
+
 ## 0.13.2
 
 ### Patch Changes
