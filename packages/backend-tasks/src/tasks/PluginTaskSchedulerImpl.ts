@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+import { ConflictError, NotFoundError } from '@backstage/errors';
 import { Knex } from 'knex';
 import { Logger } from 'winston';
+import { DbTasksRow, DB_TASKS_TABLE } from '../database/tables';
+import { LocalTaskWorker } from './LocalTaskWorker';
 import { TaskWorker } from './TaskWorker';
 import {
   PluginTaskScheduler,
@@ -24,17 +27,19 @@ import {
   TaskScheduleDefinition,
 } from './types';
 import { validateId } from './util';
-import { DB_TASKS_TABLE, DbTasksRow } from '../database/tables';
-import { ConflictError, NotFoundError } from '@backstage/errors';
 
 /**
  * Implements the actual task management.
  */
 export class PluginTaskSchedulerImpl implements PluginTaskScheduler {
+  private readonly localTasks: LocalTaskWorker[];
+
   constructor(
     private readonly databaseFactory: () => Promise<Knex>,
     private readonly logger: Logger,
-  ) {}
+  ) {
+    this.localTasks = [];
+  }
 
   async triggerTask(id: string): Promise<void> {
     const knex = await this.databaseFactory();
@@ -82,10 +87,43 @@ export class PluginTaskSchedulerImpl implements PluginTaskScheduler {
     );
   }
 
+  async scheduleLocalTask(
+    task: TaskScheduleDefinition & TaskInvocationDefinition,
+  ): Promise<void> {
+    validateId(task.id);
+
+    const worker = new LocalTaskWorker(task.id, task.fn, this.logger);
+
+    worker.start(
+      {
+        version: 2,
+        cadence:
+          'cron' in task.frequency
+            ? task.frequency.cron
+            : task.frequency.toISO(),
+        initialDelayDuration: task.initialDelay?.toISO(),
+        timeoutAfterDuration: task.timeout.toISO(),
+      },
+      {
+        signal: task.signal,
+      },
+    );
+
+    this.localTasks.push(worker);
+  }
+
   createScheduledTaskRunner(schedule: TaskScheduleDefinition): TaskRunner {
     return {
       run: async task => {
         await this.scheduleTask({ ...task, ...schedule });
+      },
+    };
+  }
+
+  createScheduledLocalTaskRunner(schedule: TaskScheduleDefinition): TaskRunner {
+    return {
+      run: async task => {
+        await this.scheduleLocalTask({ ...task, ...schedule });
       },
     };
   }
