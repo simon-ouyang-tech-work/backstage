@@ -18,7 +18,7 @@ metadata:
   name: eva.macdowell.teamd
 spec:
   profile:
-    displayName: Eva MacDowell
+    displayName: Eva MacDowell in team D
     email: eva-macdowell@example.com
     picture: https://avatars.dicebear.com/api/avataaars/eva-macdowell@example.com.svg?background=%23fff
   memberOf: [team-d]
@@ -29,7 +29,7 @@ metadata:
   name: lucy.sheehan.teamd
 spec:
   profile:
-    displayName: Lucy Sheehan
+    displayName: Lucy Sheehan in team D
     email: lucy-sheehan@example.com
     picture: https://avatars.dicebear.com/api/avataaars/lucy-sheehan@example.com.svg?background=%23fff
   memberOf: [team-d]
